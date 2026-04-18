@@ -1,0 +1,300 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String          @id @default(cuid())
+  email              String          @unique
+  name               String?
+  role               UserRole        @default(MARKETER)
+  managedCampaigns   Campaign[]      @relation("CampaignOwner")
+  createdContent     ContentBlock[]  @relation("ContentAuthor")
+  createdEmailModels EmailTemplate[] @relation("EmailTemplateAuthor")
+  analyticsEvents    AnalyticsEvent[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model ContentBlock {
+  id              String             @id @default(cuid())
+  key             String             @unique
+  name            String
+  type            ContentBlockType
+  status          PublishStatus      @default(DRAFT)
+  pagePath        String
+  headline        String
+  body            String?
+  ctaLabel        String?
+  ctaUrl          String?
+  metadata        Json?
+  createdBy       User               @relation("ContentAuthor", fields: [createdById], references: [id])
+  createdById     String
+  banners         Banner[]
+  campaignAssets  CampaignAsset[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  publishedAt     DateTime?
+
+  @@index([type, status])
+  @@index([pagePath])
+}
+
+model Banner {
+  id             String         @id @default(cuid())
+  key            String         @unique
+  name           String
+  status         PublishStatus  @default(DRAFT)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  contentBlock   ContentBlock?  @relation(fields: [contentBlockId], references: [id])
+  contentBlockId String?
+  campaignAssets CampaignAsset[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([status, startsAt, endsAt])
+}
+
+model Collection {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  name           String
+  description    String?
+  status         PublishStatus   @default(DRAFT)
+  heroImageUrl   String?
+  products       Product[]
+  campaignAssets CampaignAsset[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  publishedAt    DateTime?
+
+  @@index([status])
+}
+
+model Product {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  name           String
+  description    String?
+  story          String?
+  status         PublishStatus   @default(DRAFT)
+  priceInCents   Int
+  compareAtCents Int?
+  currency       String          @default("USD")
+  collection     Collection?     @relation(fields: [collectionId], references: [id])
+  collectionId   String?
+  campaignAssets CampaignAsset[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  publishedAt    DateTime?
+
+  @@index([collectionId])
+  @@index([status])
+}
+
+model Campaign {
+  id              String          @id @default(cuid())
+  slug            String          @unique
+  name            String
+  objective       String?
+  status          CampaignStatus  @default(DRAFT)
+  startsAt        DateTime?
+  endsAt          DateTime?
+  targetPage      String?
+  landingPagePath String?
+  owner           User?           @relation("CampaignOwner", fields: [ownerId], references: [id])
+  ownerId         String?
+  assets          CampaignAsset[]
+  emailCampaigns  EmailCampaign[]
+  abTests         ABTest[]
+  analyticsEvents AnalyticsEvent[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([status, startsAt, endsAt])
+}
+
+model CampaignAsset {
+  id             String            @id @default(cuid())
+  key            String            @unique
+  campaign       Campaign          @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaignId     String
+  type           CampaignAssetType
+  contentBlock   ContentBlock?     @relation(fields: [contentBlockId], references: [id])
+  contentBlockId String?
+  banner         Banner?           @relation(fields: [bannerId], references: [id])
+  bannerId       String?
+  collection     Collection?       @relation(fields: [collectionId], references: [id])
+  collectionId   String?
+  product        Product?          @relation(fields: [productId], references: [id])
+  productId      String?
+  emailTemplate  EmailTemplate?    @relation(fields: [emailTemplateId], references: [id])
+  emailTemplateId String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([campaignId, type])
+}
+
+model EmailTemplate {
+  id             String            @id @default(cuid())
+  key            String            @unique
+  name           String
+  subject        String
+  preheader      String?
+  status         PublishStatus     @default(DRAFT)
+  html           String
+  createdBy      User              @relation("EmailTemplateAuthor", fields: [createdById], references: [id])
+  createdById    String
+  campaignAssets CampaignAsset[]
+  emailCampaigns EmailCampaign[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  publishedAt    DateTime?
+
+  @@index([status])
+}
+
+model EmailCampaign {
+  id              String              @id @default(cuid())
+  key             String              @unique
+  name            String
+  status          EmailCampaignStatus @default(DRAFT)
+  subjectOverride String?
+  sendAt          DateTime?
+  audienceSegment String?
+  campaign        Campaign?           @relation(fields: [campaignId], references: [id])
+  campaignId      String?
+  template        EmailTemplate       @relation(fields: [templateId], references: [id])
+  templateId      String
+  events          AnalyticsEvent[]
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([status, sendAt])
+}
+
+model ABTest {
+  id          String       @id @default(cuid())
+  key         String       @unique
+  name        String
+  type        ABTestType
+  status      ABTestStatus @default(DRAFT)
+  targetPage  String
+  campaign    Campaign?    @relation(fields: [campaignId], references: [id])
+  campaignId  String?
+  variants    ABVariant[]
+  analyticsEvents AnalyticsEvent[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  completedAt DateTime?
+
+  @@index([status, type])
+}
+
+model ABVariant {
+  id               String   @id @default(cuid())
+  test             ABTest   @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId           String
+  key              String
+  label            String
+  content          String
+  allocation       Int      @default(50)
+  impressions      Int      @default(0)
+  clicks           Int      @default(0)
+  conversions      Int      @default(0)
+  conversionRate   Decimal  @default(0) @db.Decimal(5, 2)
+  clickThroughRate Decimal  @default(0) @db.Decimal(5, 2)
+  isWinner         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([testId, key])
+}
+
+model AnalyticsEvent {
+  id              String          @id @default(cuid())
+  eventName       String
+  source          AnalyticsSource @default(STOREFRONT)
+  sessionId       String?
+  user            User?           @relation(fields: [userId], references: [id])
+  userId          String?
+  campaign        Campaign?       @relation(fields: [campaignId], references: [id])
+  campaignId      String?
+  emailCampaign   EmailCampaign?  @relation(fields: [emailCampaignId], references: [id])
+  emailCampaignId String?
+  abTest          ABTest?         @relation(fields: [abTestId], references: [id])
+  abTestId        String?
+  payload         Json?
+  createdAt       DateTime        @default(now())
+
+  @@index([eventName, createdAt])
+  @@index([campaignId, createdAt])
+}
+
+enum UserRole {
+  ADMIN
+  DESIGNER
+  MARKETER
+  MERCHANDISER
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+}
+
+enum EmailCampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+}
+
+enum ABTestStatus {
+  DRAFT
+  RUNNING
+  COMPLETED
+}
+
+enum ContentBlockType {
+  HOMEPAGE_HERO
+  PROMOTIONAL_BANNER
+  FEATURED_COLLECTION
+  CTA_SECTION
+  LANDING_SECTION
+}
+
+enum CampaignAssetType {
+  BANNER
+  CONTENT_BLOCK
+  COLLECTION
+  PRODUCT
+  EMAIL_TEMPLATE
+}
+
+enum ABTestType {
+  HOMEPAGE_HERO
+  CAMPAIGN_BANNER
+  CTA_COPY
+  PROMOTIONAL_HEADLINE
+}
+
+enum AnalyticsSource {
+  STOREFRONT
+  CAMPAIGN
+  EMAIL
+  ADMIN
+}

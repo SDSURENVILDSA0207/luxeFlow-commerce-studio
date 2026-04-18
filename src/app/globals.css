@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-background: #121015;
+  --color-foreground: #f4efe6;
+  --color-surface: #1a1820;
+  --color-surface-2: #23202b;
+  --color-surface-3: #2d2936;
+  --color-border: #3a3445;
+  --color-border-strong: #4b4359;
+  --color-accent: #caa774;
+  --color-accent-soft: #dfc7a2;
+  --color-accent-foreground: #23170d;
+  --color-muted: #b9b0a3;
+  --color-success: #7da888;
+  --color-warning: #c7a36f;
+  --color-danger: #b87575;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background:
+    radial-gradient(circle at 12% -18%, rgba(157, 126, 88, 0.23), rgba(157, 126, 88, 0) 38%),
+    radial-gradient(circle at 92% -8%, rgba(93, 74, 110, 0.26), rgba(93, 74, 110, 0) 34%),
+    #121015;
+  color: var(--color-foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-playfair), ui-serif, Georgia, serif;
+    color: var(--color-foreground);
+  }
+
+  h1 {
+    @apply text-display-xl md:text-display-2xl;
+  }
+
+  h2 {
+    @apply text-display-lg;
+  }
+
+  h3 {
+    @apply text-heading-xl;
+  }
+
+  h4 {
+    @apply text-heading-lg;
+  }
+
+  p {
+    @apply text-body text-muted;
+  }
+
+  small {
+    @apply text-body-sm text-muted;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    color: var(--color-foreground);
+  }
+}
+
+@layer components {
+  .premium-panel {
+    @apply rounded-xl border border-border bg-surface shadow-premium-soft;
+  }
+
+  .premium-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .section-space {
+    @apply py-space-2xl md:py-space-3xl;
+  }
+
+  .section-stack {
+    @apply space-y-6 md:space-y-7;
+  }
+
+  .field-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-muted;
+  }
+
+  /* Warmer, editorial storefront scope — does not affect admin */
+  .storefront-editorial {
+    --color-background: #121013;
+    --color-foreground: #f7f3ec;
+    --color-surface: #1b171e;
+    --color-surface-2: #252028;
+    --color-surface-3: #2f2933;
+    --color-border: #3d3643;
+    --color-border-strong: #4e4656;
+    --color-accent: #c4a574;
+    --color-accent-soft: #e3d4b8;
+    --color-accent-foreground: #1c140c;
+    --color-muted: #b5ab9f;
+    background:
+      radial-gradient(ellipse 100% 90% at 50% -35%, rgba(196, 165, 116, 0.1), transparent 58%),
+      radial-gradient(ellipse 65% 55% at 100% 35%, rgba(90, 72, 108, 0.075), transparent 52%),
+      radial-gradient(ellipse 55% 50% at 0% 55%, rgba(196, 165, 116, 0.055), transparent 48%),
+      linear-gradient(185deg, #161218 0%, #121013 42%, #151016 100%);
+  }
+
+  .storefront-editorial .font-display,
+  .storefront-editorial h1,
+  .storefront-editorial h2,
+  .storefront-editorial h3,
+  .storefront-editorial h4 {
+    letter-spacing: -0.02em;
+  }
+}
