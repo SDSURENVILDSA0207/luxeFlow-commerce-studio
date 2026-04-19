@@ -26,9 +26,9 @@ const campaignRows = [
 ] as const;
 
 const priorities = [
-  { text: "Finalize hero assets for Bridal campaign landing page.", href: "/admin/content" as Route },
-  { text: "Approve featured collection email before 3:00 PM send window.", href: "/admin/email-templates" as Route },
-  { text: "Review A/B result snapshot and select winner variant.", href: "/admin/experiments" as Route }
+  { text: "Finalize hero assets for Bridal campaign landing page.", href: "/studio/content" as Route },
+  { text: "Approve featured collection email before 3:00 PM send window.", href: "/studio/email-templates" as Route },
+  { text: "Review A/B result snapshot and select winner variant.", href: "/studio/experiments" as Route }
 ] as const;
 
 export default function AdminDashboardPage() {
@@ -38,6 +38,7 @@ export default function AdminDashboardPage() {
 
       <div className="grid min-w-0 gap-4 xl:grid-cols-[1.3fr_1fr]">
         <DashboardPanel
+          id="campaign-momentum"
           title="Campaign Momentum"
           subtitle="Track active launches and optimization opportunities in one place."
         >
@@ -49,15 +50,22 @@ export default function AdminDashboardPage() {
                 className="block rounded-xl border border-[#ede3d7] bg-[#fcfaf7] p-4 transition-colors hover:border-[#d5b98f] hover:bg-white"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-body-sm font-semibold text-[#33281f]">{item.label}</p>
-                  <Badge variant="accent">{item.status}</Badge>
+                  <p className="min-w-0 flex-1 text-body-sm font-semibold leading-snug text-[#33281f]">
+                    {item.label}
+                  </p>
+                  <Badge
+                    variant="accent"
+                    className="w-[8rem] min-h-[2rem] shrink-0 justify-center border bg-[#faf7f0] px-3 py-1.5 text-[0.6875rem] font-semibold !leading-none tracking-[0.12em] !border-[#9b7b4b]/45 !text-[#9b7b4b] shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]"
+                  >
+                    {item.status}
+                  </Badge>
                 </div>
                 <p className="mt-2 text-body-sm text-[#7c6e5e]">{item.note}</p>
                 <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[#9b7b4b]">Open live campaign →</p>
               </Link>
             ))}
             <Link
-              href={"/admin/campaigns" as Route}
+              href={"/studio/campaigns" as Route}
               className="inline-block text-body-sm font-medium text-[#7a5f3d] underline-offset-2 hover:underline"
             >
               Manage in Campaigns
@@ -65,7 +73,7 @@ export default function AdminDashboardPage() {
           </div>
         </DashboardPanel>
 
-        <DashboardPanel title="Studio Priorities" subtitle="Today">
+        <DashboardPanel id="studio-priorities" title="Studio Priorities" subtitle="Today">
           <ul className="space-y-3 text-body-sm text-[#6f6151]">
             {priorities.map((item) => (
               <li key={item.text}>

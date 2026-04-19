@@ -7,8 +7,9 @@ export type ButtonSize = "sm" | "md" | "lg";
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-accent text-accent-foreground border border-transparent hover:bg-accent-soft active:translate-y-px shadow-premium-soft",
+  /** `!text-*` so label stays readable when a light parent (e.g. admin shell) sets `text-[#2a2219]` and wins over non-forced `text-foreground`. */
   secondary:
-    "bg-surface-2 text-foreground border border-border-strong hover:bg-surface-3 hover:border-accent/40 active:translate-y-px shadow-premium-inset",
+    "bg-surface-2 !text-[#f4efe6] border border-border-strong hover:bg-surface-3 hover:!text-white hover:border-accent/40 active:translate-y-px shadow-premium-inset",
   ghost: "bg-transparent text-muted border border-transparent hover:text-foreground hover:bg-surface/70",
   luxury:
     "border border-white/[0.14] bg-[color-mix(in_srgb,var(--color-surface-2)_92%,transparent)] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_4px_18px_rgba(0,0,0,0.28)] hover:border-accent/50 hover:bg-[color-mix(in_srgb,var(--color-accent)_11%,var(--color-surface-2))] hover:text-foreground hover:shadow-[0_0_28px_rgba(196,165,116,0.2),inset_0_1px_0_rgba(255,255,255,0.12)] active:translate-y-px"

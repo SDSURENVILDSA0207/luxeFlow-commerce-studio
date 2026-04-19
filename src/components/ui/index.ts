@@ -5,5 +5,7 @@ export * from "./input";
 export * from "./modal";
 export * from "./page-hero";
 export * from "./select";
+export * from "./dropdown-panel";
+export * from "./menu-select";
 export * from "./table";
 export * from "./tabs";

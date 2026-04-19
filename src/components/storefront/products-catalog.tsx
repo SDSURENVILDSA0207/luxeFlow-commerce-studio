@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ProductCollectionCard } from "@/components/storefront/product-collection-card";
 import { catalogProducts, parsePriceUsd } from "@/lib/storefront/products-catalog-data";
-import { Badge, buttonVisualClasses, Select } from "@/components/ui";
+import { Badge, buttonVisualClasses, MenuSelect } from "@/components/ui";
 
 function matchesSearch(
   q: string,
@@ -76,18 +76,17 @@ export function ProductsCatalog() {
             />
           </form>
           <div className="w-full min-w-0 sm:w-72">
-            <Select
+            <MenuSelect
+              aria-label="Sort products"
               value={sortKey}
-              onChange={(e) => {
-                const v = e.target.value;
-                setSortKey(v);
-              }}
-            >
-              <option value="featured">Sort: Featured</option>
-              <option value="newest">Sort: Newest</option>
-              <option value="price-low">Sort: Price Low to High</option>
-              <option value="price-high">Sort: Price High to Low</option>
-            </Select>
+              onChange={setSortKey}
+              options={[
+                { value: "featured", label: "Sort: Featured" },
+                { value: "newest", label: "Sort: Newest" },
+                { value: "price-low", label: "Sort: Price · Low to high" },
+                { value: "price-high", label: "Sort: Price · High to low" }
+              ]}
+            />
           </div>
         </div>
       </section>

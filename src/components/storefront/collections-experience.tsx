@@ -14,7 +14,7 @@ import {
   type CollectionProduct,
   type FilterGroupLabel
 } from "@/lib/storefront/collections-data";
-import { Badge, buttonVisualClasses, Card, CardContent, Select } from "@/components/ui";
+import { Badge, buttonVisualClasses, Card, CardContent, MenuSelect } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
 
 const initialFilters: Record<FilterGroupLabel, string> = {
@@ -162,12 +162,17 @@ export function CollectionsExperience() {
         </div>
 
         <div className="w-full max-w-full sm:max-w-xs">
-          <Select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
-            <option value="featured">Sort: Featured</option>
-            <option value="latest">Sort: New arrivals</option>
-            <option value="price-low">Sort: Price low to high</option>
-            <option value="price-high">Sort: Price high to low</option>
-          </Select>
+          <MenuSelect
+            aria-label="Sort collection"
+            value={sortKey}
+            onChange={setSortKey}
+            options={[
+              { value: "featured", label: "Sort: Featured" },
+              { value: "latest", label: "Sort: New arrivals" },
+              { value: "price-low", label: "Sort: Price · Low to high" },
+              { value: "price-high", label: "Sort: Price · High to low" }
+            ]}
+          />
         </div>
 
         <div className="space-y-16">

@@ -1,10 +1,12 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useState } from "react";
-import { Button, Input, Select } from "@/components/ui";
+import { useId, useState } from "react";
+import { CollaboratorRoleSelect } from "@/components/admin/collaborator-role-select";
+import { Button, Input } from "@/components/ui";
 
 export function SettingsWorkspaceForm() {
+  const roleFieldId = useId();
   const [workspaceName, setWorkspaceName] = useState("LuxeFlow Atelier");
   const [defaultRole, setDefaultRole] = useState("editor");
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
@@ -34,16 +36,17 @@ export function SettingsWorkspaceForm() {
               setWorkspaceName(ev.target.value);
               if (status === "error") setStatus("idle");
             }}
-            className="border-[#ddcfbc] bg-[#fffdf9]"
+            className="border-[#ddcfbc] bg-[#fffdf9] text-[#32271c] placeholder:text-[#857765] hover:bg-white focus:border-[#c9a66b]"
           />
         </label>
-        <label className="space-y-2 text-body-sm text-[#6f6151]">
+        <label className="space-y-2 text-body-sm text-[#6f6151]" htmlFor={roleFieldId}>
           <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9b7b4b]">Default collaborator role</span>
-          <Select value={defaultRole} disabled={saving} onChange={(ev) => setDefaultRole(ev.target.value)}>
-            <option value="viewer">Viewer</option>
-            <option value="editor">Editor</option>
-            <option value="admin">Admin</option>
-          </Select>
+          <CollaboratorRoleSelect
+            id={roleFieldId}
+            value={defaultRole}
+            disabled={saving}
+            onChange={setDefaultRole}
+          />
         </label>
       </div>
       <div className="flex flex-wrap items-center gap-3">

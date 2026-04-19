@@ -298,3 +298,173 @@ enum AnalyticsSource {
   EMAIL
   ADMIN
 }
+
+// ---------------------------------------------------------------------------
+// Jewelry Inventory (B2B) — Admin area, separate from storefront Product
+// ---------------------------------------------------------------------------
+
+enum InventoryLowStockStatus {
+  OK
+  LOW
+  OUT
+}
+
+enum B2BAccountStatus {
+  ACTIVE
+  ON_HOLD
+  INACTIVE
+}
+
+enum TradeQuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum TradeOrderStatus {
+  DRAFT
+  CONFIRMED
+  IN_PRODUCTION
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum TradeFulfillmentStatus {
+  UNFULFILLED
+  PARTIAL
+  FULFILLED
+}
+
+enum JewelrySupplierStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model JewelrySupplier {
+  id           String                @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  categories   String[]              @default([])
+  materials    String[]              @default([])
+  leadTimeDays Int?
+  status       JewelrySupplierStatus @default(ACTIVE)
+  notes        String?
+  items        JewelryInventoryItem[]
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  @@index([name])
+}
+
+model JewelryInventoryItem {
+  id               String                 @id @default(cuid())
+  sku              String                 @unique
+  name             String
+  category         String
+  material         String
+  gemstone         String?
+  stockQuantity    Int                    @default(0)
+  reservedQuantity Int                    @default(0)
+  reorderThreshold Int                    @default(5)
+  lowStockStatus   InventoryLowStockStatus @default(OK)
+  supplier         JewelrySupplier?       @relation(fields: [supplierId], references: [id])
+  supplierId       String?
+  notes            String?
+  quoteLines       TradeQuoteLine[]
+  orderLines       TradeOrderLine[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@index([supplierId])
+  @@index([category])
+  @@index([lowStockStatus])
+}
+
+model B2BCustomer {
+  id            String           @id @default(cuid())
+  businessName  String
+  contactName   String
+  email         String           @unique
+  phone         String?
+  accountStatus B2BAccountStatus @default(ACTIVE)
+  notes         String?
+  quotes        TradeQuote[]
+  orders        TradeOrder[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([businessName])
+}
+
+model TradeQuote {
+  id            String           @id @default(cuid())
+  quoteNumber   String           @unique
+  customer      B2BCustomer      @relation(fields: [customerId], references: [id])
+  customerId    String
+  status        TradeQuoteStatus @default(DRAFT)
+  validUntil    DateTime?
+  subtotalCents Int              @default(0)
+  totalCents    Int              @default(0)
+  currency      String           @default("USD")
+  notes         String?
+  lines         TradeQuoteLine[]
+  orders        TradeOrder[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([status])
+}
+
+model TradeQuoteLine {
+  id           String               @id @default(cuid())
+  quote        TradeQuote           @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId      String
+  inventoryItem JewelryInventoryItem @relation(fields: [inventoryItemId], references: [id])
+  inventoryItemId String
+  quantity     Int
+  unitPriceCents Int
+  lineTotalCents Int
+
+  @@index([quoteId])
+}
+
+model TradeOrder {
+  id                 String                  @id @default(cuid())
+  orderNumber        String                  @unique
+  customer           B2BCustomer             @relation(fields: [customerId], references: [id])
+  customerId         String
+  quote              TradeQuote?             @relation(fields: [quoteId], references: [id])
+  quoteId            String?
+  status             TradeOrderStatus        @default(DRAFT)
+  fulfillmentStatus  TradeFulfillmentStatus  @default(UNFULFILLED)
+  subtotalCents      Int                     @default(0)
+  totalCents         Int                     @default(0)
+  currency           String                  @default("USD")
+  notes              String?
+  lines              TradeOrderLine[]
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([status])
+  @@index([quoteId])
+}
+
+model TradeOrderLine {
+  id               String               @id @default(cuid())
+  order            TradeOrder           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId          String
+  inventoryItem    JewelryInventoryItem @relation(fields: [inventoryItemId], references: [id])
+  inventoryItemId  String
+  quantity         Int
+  unitPriceCents   Int
+  lineTotalCents   Int
+  quantityFulfilled Int                 @default(0)
+
+  @@index([orderId])
+}

@@ -4,6 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Button, Card, CardContent } from "@/components/ui";
+import { adminNativeSelectClassName } from "@/components/ui/dropdown-panel";
 import { resolveUserFacingHref } from "@/lib/navigation/resolve-user-facing-href";
 import { seedContentBlocks } from "@/modules/cms/seed-content-blocks";
 import type { ContentBlock, ContentBlockType, ContentStatus } from "@/modules/cms/types";
@@ -85,7 +86,7 @@ export function ContentManagementStudio() {
   }
 
   return (
-    <div className="grid gap-5 xl:grid-cols-[23rem_1fr]">
+    <div id="content-blocks" className="grid gap-5 xl:grid-cols-[23rem_1fr]">
       <Card className="border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
         <CardContent className="space-y-4 p-5">
           <div className="flex items-center justify-between">
@@ -132,14 +133,19 @@ export function ContentManagementStudio() {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#9b7b4b]">Editor</p>
                 <h3 className="mt-1 font-display text-heading-lg text-[#2d2319]">Edit Content Block</h3>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
                 <span className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase ${statusBadgeClass(selectedBlock.status)}`}>
                   {selectedBlock.status}
                 </span>
-                <Button size="sm" variant="secondary" onClick={() => patchSelectedBlock({ status: "draft" })}>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="shrink-0 whitespace-nowrap !border !border-solid !border-[#ddcfbc] !bg-[#fffdf9] !text-[#1f1810] shadow-sm hover:!border-[#c9a66b] hover:!bg-white hover:!text-[#16130e] active:translate-y-px"
+                  onClick={() => patchSelectedBlock({ status: "draft" })}
+                >
                   Save Draft
                 </Button>
-                <Button size="sm" onClick={publishSelected}>
+                <Button size="sm" className="shrink-0 whitespace-nowrap" onClick={publishSelected}>
                   Publish
                 </Button>
               </div>
@@ -170,7 +176,7 @@ export function ContentManagementStudio() {
                 <select
                   value={selectedBlock.type}
                   onChange={(event) => patchSelectedBlock({ type: event.target.value as ContentBlockType })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {Object.entries(typeLabelMap).map(([type, label]) => (
                     <option key={type} value={type}>

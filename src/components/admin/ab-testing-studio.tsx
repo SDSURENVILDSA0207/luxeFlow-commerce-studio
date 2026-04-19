@@ -1,7 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Card, CardContent } from "@/components/ui";
+import { adminNativeSelectClassName } from "@/components/ui/dropdown-panel";
+import { syncStudioExperimentsSearchIndex } from "@/lib/search/admin-page-local-index";
+import { STUDIO_PAGE_SEARCH_UPDATE } from "@/lib/search/studio-page-search-events";
 import { seedAbTests } from "@/modules/experiments/seed-tests";
 import type { AbTestRecord, AbTestStatus, AbTestType } from "@/modules/experiments/types";
 
@@ -47,6 +50,19 @@ export function AbTestingStudio() {
 
   const selectedTest = useMemo(() => tests.find((test) => test.id === selectedId) ?? tests[0] ?? null, [tests, selectedId]);
 
+  useEffect(() => {
+    syncStudioExperimentsSearchIndex(tests);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent(STUDIO_PAGE_SEARCH_UPDATE));
+    }
+    return () => {
+      syncStudioExperimentsSearchIndex(null);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent(STUDIO_PAGE_SEARCH_UPDATE));
+      }
+    };
+  }, [tests]);
+
   function updateTest(patch: Partial<AbTestRecord>) {
     if (!selectedTest) return;
 
@@ -78,7 +94,10 @@ export function AbTestingStudio() {
 
   return (
     <div className="grid gap-5 xl:grid-cols-[22rem_1fr]">
-      <Card className="border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
+      <Card
+        id="experiment-list"
+        className="scroll-mt-28 border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]"
+      >
         <CardContent className="space-y-4 p-5">
           <div className="flex items-center justify-between">
             <div>
@@ -117,7 +136,7 @@ export function AbTestingStudio() {
       </Card>
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
+        <Card id="ab-test-setup" className="scroll-mt-28 border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
           <CardContent className="space-y-4 p-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
@@ -143,7 +162,7 @@ export function AbTestingStudio() {
                 <select
                   value={selectedTest.type}
                   onChange={(event) => updateTest({ type: event.target.value as AbTestType })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {testTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -220,7 +239,7 @@ export function AbTestingStudio() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
+        <Card id="ab-performance-metrics" className="scroll-mt-28 border-[#e7dfd3] bg-white shadow-[0_10px_28px_rgba(22,18,12,0.06)]">
           <CardContent className="space-y-4 p-5">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#9b7b4b]">Results View</p>

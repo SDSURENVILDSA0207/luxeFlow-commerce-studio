@@ -65,11 +65,26 @@ const config: Config = {
         "nav-sheet-in": {
           "0%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(0)" }
+        },
+        "menu-pop": {
+          "0%": { opacity: "0", transform: "translateY(-4px) scale(0.98)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" }
+        },
+        "atelier-backdrop-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" }
+        },
+        "atelier-card-in": {
+          "0%": { opacity: "0", transform: "scale(0.94) translateY(12px)" },
+          "100%": { opacity: "1", transform: "scale(1) translateY(0)" }
         }
       },
       animation: {
         "toast-in": "toast-in 240ms ease-premium forwards",
-        "nav-sheet-in": "nav-sheet-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards"
+        "nav-sheet-in": "nav-sheet-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards",
+        "menu-pop": "menu-pop 160ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards",
+        "atelier-backdrop-in": "atelier-backdrop-in 320ms ease-out forwards",
+        "atelier-card-in": "atelier-card-in 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards"
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],

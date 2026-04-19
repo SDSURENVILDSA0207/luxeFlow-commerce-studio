@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button, Card, CardContent } from "@/components/ui";
+import { adminNativeSelectClassName } from "@/components/ui/dropdown-panel";
 import { seedCampaigns } from "@/modules/campaigns/seed-campaigns";
 import type { CampaignRecord, CampaignStatus } from "@/modules/campaigns/types";
 
@@ -164,7 +165,7 @@ export function CampaignManagerStudio() {
                 <select
                   value={selectedCampaign.targetPage}
                   onChange={(event) => updateCampaign({ targetPage: event.target.value })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {targetPageOptions.map((page) => (
                     <option key={page} value={page}>
@@ -189,7 +190,7 @@ export function CampaignManagerStudio() {
                 <select
                   value={selectedCampaign.bannerBlockId}
                   onChange={(event) => updateCampaign({ bannerBlockId: event.target.value })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {bannerBlockOptions.map((option) => (
                     <option key={option} value={option}>
@@ -203,7 +204,7 @@ export function CampaignManagerStudio() {
                 <select
                   value={selectedCampaign.contentBlockId}
                   onChange={(event) => updateCampaign({ contentBlockId: event.target.value })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {contentBlockOptions.map((option) => (
                     <option key={option} value={option}>
@@ -217,7 +218,7 @@ export function CampaignManagerStudio() {
                 <select
                   value={selectedCampaign.emailTemplateId}
                   onChange={(event) => updateCampaign({ emailTemplateId: event.target.value })}
-                  className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                  className={adminNativeSelectClassName}
                 >
                   {emailTemplateOptions.map((option) => (
                     <option key={option} value={option}>

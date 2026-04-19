@@ -14,34 +14,34 @@ const kpis: {
     value: "$128.4K",
     delta: "+12.3% vs last week",
     positive: true,
-    href: "/admin/analytics#overview"
+    href: "/studio/analytics#overview"
   },
   {
     label: "Campaign CVR",
     value: "4.82%",
     delta: "+0.6pt from baseline",
     positive: true,
-    href: "/admin/analytics#overview"
+    href: "/studio/analytics#overview"
   },
   {
     label: "Average Order Value",
     value: "$1,420",
     delta: "+8.1% with gift incentive",
     positive: true,
-    href: "/admin/analytics#overview"
+    href: "/studio/analytics#overview"
   },
   {
     label: "Return Rate",
     value: "2.4%",
     delta: "-0.3pt after size guide updates",
     positive: true,
-    href: "/admin/analytics#overview"
+    href: "/studio/analytics#overview"
   }
 ];
 
 export function DashboardKpiGrid() {
   return (
-    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <section id="kpi-metrics" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {kpis.map((kpi) => (
         <Link
           key={kpi.label}

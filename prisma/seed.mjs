@@ -695,6 +695,488 @@ async function main() {
     ]
   });
 
+  // —— Jewelry B2B inventory (Jewelry Admin) ——
+  await prisma.tradeOrderLine.deleteMany({});
+  await prisma.tradeOrder.deleteMany({});
+  await prisma.tradeQuoteLine.deleteMany({});
+  await prisma.tradeQuote.deleteMany({});
+  await prisma.jewelryInventoryItem.deleteMany({});
+  await prisma.b2BCustomer.deleteMany({});
+  await prisma.jewelrySupplier.deleteMany({});
+
+  const supValenza = await prisma.jewelrySupplier.create({
+    data: {
+      name: "Valenza Atelier Metals",
+      email: "trade@valenza-atelier.example",
+      phone: "+39 0131 555 0100",
+      categories: ["Rings", "Bridal"],
+      materials: ["18k gold", "platinum"],
+      leadTimeDays: 21,
+      status: "ACTIVE",
+      notes: "Primary bench partner for EU bridal mounts."
+    }
+  });
+
+  const supAntwerp = await prisma.jewelrySupplier.create({
+    data: {
+      name: "Antwerp Gem House",
+      email: "b2b@antwerp-gem.example",
+      phone: "+32 3 555 0200",
+      categories: ["Loose stones", "Bridal"],
+      materials: ["diamond", "sapphire"],
+      leadTimeDays: 14,
+      status: "ACTIVE",
+      notes: "Certified melee; weekly air shipments."
+    }
+  });
+
+  const supTokyo = await prisma.jewelrySupplier.create({
+    data: {
+      name: "Tokyo Pearl Collective",
+      email: "export@tokyo-pearl.example",
+      phone: "+81 3 5550 1122",
+      categories: ["Necklaces", "Earrings"],
+      materials: ["akoya pearl", "18k gold"],
+      leadTimeDays: 28,
+      status: "ACTIVE",
+      notes: "Akoya and South Sea strands; MOQ 6 units."
+    }
+  });
+
+  await prisma.jewelrySupplier.create({
+    data: {
+      name: "Rhine Findings (archived)",
+      email: null,
+      phone: "+49 221 555 8899",
+      categories: ["Findings"],
+      materials: ["sterling silver"],
+      leadTimeDays: 10,
+      status: "INACTIVE",
+      notes: "Legacy vendor — do not route new POs."
+    }
+  });
+
+  const invRing = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-RG-001",
+      name: "Luna Halo Ring — trade blank",
+      category: "Rings",
+      material: "18k yellow gold",
+      gemstone: "Diamond",
+      stockQuantity: 42,
+      reservedQuantity: 7,
+      reorderThreshold: 8,
+      lowStockStatus: "OK",
+      supplierId: supValenza.id,
+      notes: "Halo basket fits 6.5mm center."
+    }
+  });
+
+  const invBand = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-BD-014",
+      name: "Aurelia band — 4mm",
+      category: "Rings",
+      material: "Platinum",
+      gemstone: null,
+      stockQuantity: 6,
+      reservedQuantity: 2,
+      reorderThreshold: 5,
+      lowStockStatus: "OK",
+      supplierId: supValenza.id
+    }
+  });
+
+  const invPendant = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-PD-022",
+      name: "Solstice pendant — sapphire",
+      category: "Necklaces",
+      material: "18k white gold",
+      gemstone: "Sapphire",
+      stockQuantity: 0,
+      reservedQuantity: 0,
+      reorderThreshold: 4,
+      lowStockStatus: "OUT",
+      supplierId: supAntwerp.id,
+      notes: "Reorder expected week of May 5."
+    }
+  });
+
+  const invBracelet = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-BR-031",
+      name: "Celestial tennis — 3ctw",
+      category: "Bracelets",
+      material: "18k white gold",
+      gemstone: "Diamond",
+      stockQuantity: 11,
+      reservedQuantity: 0,
+      reorderThreshold: 3,
+      lowStockStatus: "OK",
+      supplierId: supAntwerp.id
+    }
+  });
+
+  const invEarring = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-ER-008",
+      name: "Nocturne drop — pearl",
+      category: "Earrings",
+      material: "18k rose gold",
+      gemstone: "Pearl",
+      stockQuantity: 4,
+      reservedQuantity: 0,
+      reorderThreshold: 6,
+      lowStockStatus: "LOW",
+      supplierId: supTokyo.id
+    }
+  });
+
+  const invChain = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-NK-017",
+      name: "Serpent chain — 20in",
+      category: "Necklaces",
+      material: "18k yellow gold",
+      gemstone: null,
+      stockQuantity: 88,
+      reservedQuantity: 12,
+      reorderThreshold: 20,
+      lowStockStatus: "OK",
+      supplierId: supValenza.id
+    }
+  });
+
+  const invSignet = await prisma.jewelryInventoryItem.create({
+    data: {
+      sku: "LF-TRD-RG-019",
+      name: "Vesper signet — blank",
+      category: "Rings",
+      material: "Sterling silver",
+      gemstone: null,
+      stockQuantity: 2,
+      reservedQuantity: 0,
+      reorderThreshold: 8,
+      lowStockStatus: "LOW",
+      supplierId: null
+    }
+  });
+
+  const b2bHarper = await prisma.b2BCustomer.create({
+    data: {
+      businessName: "Harper Fine Jewelers",
+      contactName: "Jordan Lee",
+      email: "trade@harperfine.example",
+      phone: "+1 212 555 0140",
+      accountStatus: "ACTIVE",
+      notes: "Flagship on Madison; prefers consolidated weekly shipments."
+    }
+  });
+
+  const b2bNorth = await prisma.b2BCustomer.create({
+    data: {
+      businessName: "North Coast Gallery",
+      contactName: "Sam Rivera",
+      email: "orders@northcoastgallery.example",
+      phone: "+1 415 555 0199",
+      accountStatus: "ON_HOLD",
+      notes: "Credit review until Q3."
+    }
+  });
+
+  const b2bVolt = await prisma.b2BCustomer.create({
+    data: {
+      businessName: "Volt & Stone Collective",
+      contactName: "Alex Kim",
+      email: "b2b@voltstone.example",
+      phone: "+1 646 555 2200",
+      accountStatus: "ACTIVE"
+    }
+  });
+
+  const b2bMaison = await prisma.b2BCustomer.create({
+    data: {
+      businessName: "Maison Lioré Montréal",
+      contactName: "Camille Dubois",
+      email: "appro@maisonliore.example",
+      phone: "+1 514 555 3301",
+      accountStatus: "ACTIVE"
+    }
+  });
+
+  const b2bArchive = await prisma.b2BCustomer.create({
+    data: {
+      businessName: "Silverline Estate Buyers",
+      contactName: "Pat O’Neill",
+      email: "trade@silverline-estate.example",
+      phone: "+1 617 555 4412",
+      accountStatus: "INACTIVE"
+    }
+  });
+
+  const validSpring = new Date("2026-06-30T23:59:59.000Z");
+
+  const quote1 = await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0001",
+      customerId: b2bHarper.id,
+      status: "ACCEPTED",
+      validUntil: validSpring,
+      subtotalCents: 450000,
+      totalCents: 450000,
+      notes: "Net 30; includes branded pouches.",
+      lines: {
+        create: [
+          {
+            inventoryItemId: invRing.id,
+            quantity: 3,
+            unitPriceCents: 150000,
+            lineTotalCents: 450000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0002",
+      customerId: b2bNorth.id,
+      status: "DRAFT",
+      subtotalCents: 310000,
+      totalCents: 310000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invBand.id,
+            quantity: 2,
+            unitPriceCents: 140000,
+            lineTotalCents: 280000
+          },
+          {
+            inventoryItemId: invPendant.id,
+            quantity: 1,
+            unitPriceCents: 30000,
+            lineTotalCents: 30000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0003",
+      customerId: b2bVolt.id,
+      status: "SENT",
+      validUntil: validSpring,
+      subtotalCents: 920000,
+      totalCents: 920000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invBracelet.id,
+            quantity: 2,
+            unitPriceCents: 380000,
+            lineTotalCents: 760000
+          },
+          {
+            inventoryItemId: invChain.id,
+            quantity: 4,
+            unitPriceCents: 40000,
+            lineTotalCents: 160000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0004",
+      customerId: b2bMaison.id,
+      status: "DECLINED",
+      subtotalCents: 198000,
+      totalCents: 198000,
+      notes: "Customer chose local fabricator.",
+      lines: {
+        create: [
+          {
+            inventoryItemId: invEarring.id,
+            quantity: 6,
+            unitPriceCents: 33000,
+            lineTotalCents: 198000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0005",
+      customerId: b2bHarper.id,
+      status: "EXPIRED",
+      validUntil: new Date("2026-01-15T12:00:00.000Z"),
+      subtotalCents: 560000,
+      totalCents: 560000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invSignet.id,
+            quantity: 8,
+            unitPriceCents: 70000,
+            lineTotalCents: 560000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeQuote.create({
+    data: {
+      quoteNumber: "Q-2026-0006",
+      customerId: b2bVolt.id,
+      status: "SENT",
+      subtotalCents: 275000,
+      totalCents: 275000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invRing.id,
+            quantity: 1,
+            unitPriceCents: 155000,
+            lineTotalCents: 155000
+          },
+          {
+            inventoryItemId: invBand.id,
+            quantity: 1,
+            unitPriceCents: 120000,
+            lineTotalCents: 120000
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeOrder.create({
+    data: {
+      orderNumber: "O-2026-0001",
+      customerId: b2bHarper.id,
+      quoteId: quote1.id,
+      status: "CONFIRMED",
+      fulfillmentStatus: "UNFULFILLED",
+      subtotalCents: 450000,
+      totalCents: 450000,
+      notes: "Ship when QA batch LF-QA-118 clears.",
+      lines: {
+        create: [
+          {
+            inventoryItemId: invRing.id,
+            quantity: 3,
+            unitPriceCents: 150000,
+            lineTotalCents: 450000,
+            quantityFulfilled: 0
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeOrder.create({
+    data: {
+      orderNumber: "O-2026-0002",
+      customerId: b2bVolt.id,
+      quoteId: null,
+      status: "IN_PRODUCTION",
+      fulfillmentStatus: "PARTIAL",
+      subtotalCents: 760000,
+      totalCents: 760000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invBracelet.id,
+            quantity: 2,
+            unitPriceCents: 380000,
+            lineTotalCents: 760000,
+            quantityFulfilled: 1
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeOrder.create({
+    data: {
+      orderNumber: "O-2026-0003",
+      customerId: b2bMaison.id,
+      quoteId: null,
+      status: "SHIPPED",
+      fulfillmentStatus: "FULFILLED",
+      subtotalCents: 160000,
+      totalCents: 160000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invChain.id,
+            quantity: 4,
+            unitPriceCents: 40000,
+            lineTotalCents: 160000,
+            quantityFulfilled: 4
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeOrder.create({
+    data: {
+      orderNumber: "O-2026-0004",
+      customerId: b2bNorth.id,
+      quoteId: null,
+      status: "DRAFT",
+      fulfillmentStatus: "UNFULFILLED",
+      subtotalCents: 120000,
+      totalCents: 120000,
+      lines: {
+        create: [
+          {
+            inventoryItemId: invBand.id,
+            quantity: 1,
+            unitPriceCents: 120000,
+            lineTotalCents: 120000,
+            quantityFulfilled: 0
+          }
+        ]
+      }
+    }
+  });
+
+  await prisma.tradeOrder.create({
+    data: {
+      orderNumber: "O-2026-0005",
+      customerId: b2bHarper.id,
+      quoteId: null,
+      status: "CANCELLED",
+      fulfillmentStatus: "UNFULFILLED",
+      subtotalCents: 330000,
+      totalCents: 330000,
+      notes: "Client paused opening budget.",
+      lines: {
+        create: [
+          {
+            inventoryItemId: invEarring.id,
+            quantity: 10,
+            unitPriceCents: 33000,
+            lineTotalCents: 330000,
+            quantityFulfilled: 0
+          }
+        ]
+      }
+    }
+  });
+
   console.log("Seed complete.");
 }
 

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import { adminNativeSelectClassName } from "@/components/ui/dropdown-panel";
 import { seedEmailCampaigns } from "@/modules/email/seed-campaigns";
 import type {
   EmailCampaignRecord,
@@ -222,7 +223,7 @@ export function EmailCampaignStudio({ templates }: EmailCampaignStudioProps) {
                   <select
                     value={selectedCampaign.templateId}
                     onChange={(event) => updateCampaign({ templateId: event.target.value as EmailTemplateId })}
-                    className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                    className={adminNativeSelectClassName}
                   >
                     {templates.map((template) => (
                       <option key={template.id} value={template.id}>
@@ -257,7 +258,7 @@ export function EmailCampaignStudio({ templates }: EmailCampaignStudioProps) {
                   <select
                     value={selectedCampaign.audienceSegment}
                     onChange={(event) => updateCampaign({ audienceSegment: event.target.value })}
-                    className="premium-ring h-10 w-full rounded-lg border border-[#ddcfbc] bg-[#fffdf9] px-3 text-body-sm text-[#32271c]"
+                    className={adminNativeSelectClassName}
                   >
                     {audienceSegments.map((segment) => (
                       <option key={segment} value={segment}>

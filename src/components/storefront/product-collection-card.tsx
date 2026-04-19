@@ -1,6 +1,5 @@
 "use client";
 
-import type { Route } from "next";
 import Link from "next/link";
 import { ProductImage } from "@/components/storefront/product-image";
 import { Badge, Card, CardContent } from "@/components/ui";
