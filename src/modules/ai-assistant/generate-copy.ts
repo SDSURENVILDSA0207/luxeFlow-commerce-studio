@@ -25,7 +25,7 @@ export function generateCopySuggestions(context: AICopyContext): AICopySuggestio
     ],
     promoBannerText: [
       `${theme} Offer: Complimentary luxury packaging for ${audience} this week.`,
-      `Limited ${promo} Event - curated ${theme} pieces with concierge support.`,
+      `Limited ${promo} Event - curated ${theme} pieces with personal support.`,
       `${theme} Campaign Live: Premium savings and priority access for ${audience}.`
     ],
     emailSubjectLines: [

@@ -30,7 +30,7 @@ export const storefrontNavShopDiscover = [
 export const storefrontNavShopFeatured = {
   label: "Spring Bridal Event",
   href: "/c/spring-bridal-event" as Route,
-  description: "Limited edits, concierge styling, and gift-ready packaging."
+  description: "Limited edits, personal styling, and gift-ready packaging."
 } as const;
 
 export const homeFeaturedCategories = [
@@ -81,7 +81,7 @@ export const homeFeaturedCollections = [
   }
 ] as const;
 
-/** Homepage trust tiles — each maps to a real storefront or concierge destination */
+/** Homepage trust tiles — each maps to a real storefront or styling destination */
 export const homeTrustPoints = [
   {
     title: "Ethically Sourced Stones",
@@ -96,7 +96,7 @@ export const homeTrustPoints = [
     cta: "View care & products"
   },
   {
-    title: "Private Styling Concierge",
+    title: "Private styling",
     description: "Dedicated virtual appointments to curate pairings for gifting, events, and milestone moments.",
     href: "/c/spring-bridal-event" as Route,
     cta: "Book a campaign consult"
@@ -108,7 +108,7 @@ export type ConciergeQuickAction =
   | { label: string; href: string; external: true };
 
 /**
- * Concierge-style quick actions (reference: utility/help depth on commerce sites).
+ * Styling and help quick actions (reference: utility/help depth on commerce sites).
  * Each navigates to a real route or opens mailto.
  */
 export const conciergeQuickActions: ConciergeQuickAction[] = [
@@ -116,7 +116,7 @@ export const conciergeQuickActions: ConciergeQuickAction[] = [
   { label: "New arrivals campaign", href: "/c/new-arrivals-collection" as Route },
   { label: "Full catalog", href: "/products" as Route },
   {
-    label: "Email concierge",
+    label: "Email the studio",
     href: "mailto:concierge@luxeFlow.studio?subject=LuxeFlow%20styling%20request",
     external: true
   }

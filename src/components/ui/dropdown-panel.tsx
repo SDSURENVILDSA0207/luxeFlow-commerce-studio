@@ -2,7 +2,7 @@ import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * Standard floating panel chrome for nav mega-menus, concierge, and similar surfaces.
+ * Standard floating panel chrome for nav mega-menus, help panels, and similar surfaces.
  * Uses semantic theme tokens so it matches storefront + admin shells.
  */
 export const dropdownPanelClassName = cn(

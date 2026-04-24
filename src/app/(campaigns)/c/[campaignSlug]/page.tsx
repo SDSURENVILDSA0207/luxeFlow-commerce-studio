@@ -72,9 +72,9 @@ const themes: Record<string, CampaignTheme> = {
       "From timeless diamond studs to elevated layering essentials, discover guaranteed-delivery holiday selections.",
     heroNote: "Holiday Promise: express insured shipping + luxury wrapping",
     promoTitle: "Find gifts by style and budget",
-    promoCopy: "Our gifting concierge helps you select premium pieces for every recipient and occasion.",
+    promoCopy: "Our styling team helps you select premium pieces for every recipient and occasion.",
     ctaPrimary: "Shop Gift Guide",
-    ctaSecondary: "Talk to Concierge",
+    ctaSecondary: "Contact the studio",
     storyTitle: "A season of intentional gifting.",
     storyBody:
       "Our holiday curation focuses on versatile, high-impact pieces that feel personal, luxurious, and unforgettable."
@@ -128,7 +128,7 @@ function secondaryActionHref(slug: string): string {
     return `mailto:newsletter@luxeFlow.studio?subject=${encodeURIComponent("Early access — new arrivals")}`;
   }
   if (slug === "holiday-gift-guide") {
-    return `mailto:concierge@luxeFlow.studio?subject=${encodeURIComponent("Holiday gifting concierge")}`;
+    return `mailto:concierge@luxeFlow.studio?subject=${encodeURIComponent("Holiday gifting request")}`;
   }
   return `mailto:concierge@luxeFlow.studio?subject=${encodeURIComponent("LuxeFlow campaign inquiry")}`;
 }

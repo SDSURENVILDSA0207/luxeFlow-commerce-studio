@@ -77,7 +77,7 @@ export default function StorefrontHomePage() {
               </div>
               <div>
                 <p className="font-display text-heading-xl text-foreground">24h</p>
-                <p className="text-body-sm text-muted">Concierge response with personalized guidance</p>
+                <p className="text-body-sm text-muted">Studio reply with personalized guidance</p>
               </div>
               <div>
                 <p className="font-display text-heading-xl text-foreground">100%</p>

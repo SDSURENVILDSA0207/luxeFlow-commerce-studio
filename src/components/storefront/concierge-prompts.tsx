@@ -20,9 +20,9 @@ export function ConciergePrompts() {
             dropdownPanelClassName
           )}
           role="dialog"
-          aria-label="Concierge quick actions"
+          aria-label="Styling quick actions"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-soft">Concierge</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-soft">Styling</p>
           <p className="mt-1 text-body-sm text-muted">Jump to a destination or reach the studio—same paths as our main navigation.</p>
           <ul className="mt-3 space-y-2">
             {conciergeQuickActions.map((action) => {
@@ -65,7 +65,7 @@ export function ConciergePrompts() {
         id="concierge-trigger"
       >
         <span aria-hidden>✦</span>
-        Concierge
+        Styling
       </button>
     </div>
   );

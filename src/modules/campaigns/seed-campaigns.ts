@@ -12,7 +12,7 @@ export const seedCampaigns: CampaignRecord[] = [
     bannerBlockId: "block-promo-bridal",
     contentBlockId: "block-landing-story",
     emailTemplateId: "promotional-sale",
-    summary: "Drive bridal conversion with limited-time offer and concierge bookings.",
+    summary: "Drive bridal conversion with limited-time offer and private styling appointments.",
     updatedAt: "2026-04-16T14:00:00.000Z"
   },
   {

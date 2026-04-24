@@ -252,7 +252,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
               <ul className="space-y-2 text-body-sm text-muted">
                 <li>Certified precious materials and responsible gemstone sourcing</li>
                 <li>Complimentary luxury gift packaging and annual care service</li>
-                <li>Secure checkout with private concierge follow-up</li>
+                <li>Secure checkout with private follow-up from our team</li>
               </ul>
             </CardContent>
           </Card>
