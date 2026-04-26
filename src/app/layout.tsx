@@ -14,7 +14,10 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "LuxeFlow Commerce Studio",
-  description: "Premium commerce campaign platform foundation."
+  description: "Premium commerce campaign platform foundation.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }]
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
